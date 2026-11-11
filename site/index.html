@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Door Opener</title>
+
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    body {
+      margin: 0; /*remove default browser spacing*/
+      min-height: 100vh; /*vh: viewport height*/
+      padding: 24px 0;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    button {
+      padding: 16px 32px;
+      font-size: 1.2rem;
+    }
+    .container {
+      text-align: center;
+      font-family: "Lucida Console", monospace; 
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      width: min(92vw, 720px);
+    }
+    .connection-status {
+      font-family: "Lucida Console", monospace;
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      font-size: 0.8rem;
+    }
+    .serial-monitor {
+      width: 100%;
+      margin-top: 12px;
+      text-align: left;
+    }
+    .serial-monitor-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+    .serial-monitor-header h2 {
+      margin: 0;
+      font-size: 1rem;
+    }
+    #clear-monitor-btn {
+      padding: 8px 12px;
+      font-size: 0.8rem;
+    }
+    #serial-output {
+      box-sizing: border-box;
+      width: 100%;
+      height: 220px;
+      margin: 0;
+      padding: 12px;
+      overflow-y: auto;
+      border: 1px solid #777;
+      border-radius: 4px;
+      background: #111;
+      color: #7cff7c;
+      font: 0.85rem/1.4 "Lucida Console", monospace;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Door Opener</h1>
+    <p>Use your device to controll the door remotely.</p>
+
+    <button id="connect-btn">CONNECT BLE</button>
+    <button id="connect-serial-btn">CONNECT TEENSY (USB)</button>
+    <button id="disconnect-btn" disabled>DISCONNECT</button>
+    <button id="open-btn">OPEN</button>
+    <button id="close-btn">CLOSE</button>
+    <button id="stop-btn">STOP</button>
+    <button id="manual-btn">MANUAL OPERATION</button>
+    <button id="setup-btn">SETUP WHEEL</button>
+    <p id="last-command">Last command: none</p>
+    <section class="serial-monitor" aria-labelledby="serial-monitor-title">
+      <div class="serial-monitor-header">
+        <h2 id="serial-monitor-title">SERIAL MONITOR</h2>
+        <button id="clear-monitor-btn" type="button">CLEAR</button>
+      </div>
+      <pre id="serial-output" role="log" aria-live="polite">Waiting for a connection...</pre>
+    </section>
+    <p>Version 1.4.0</p>
+  </div>
+  <div id="connection-status" class="connection-status">CONNECTION: DISCONNECTED</div>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js');
+    }
+  </script>
+
+  <script src="ble.js"></script>
+</body>
+</html>
